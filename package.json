@@ -4,29 +4,47 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:prod": "webpack -p",
-    "build:dev": "webpack -d",
-    "build:watch": "webpack -d --watch"
+    "clean": "rm -rf ./public/build",
+    "build:prod": "npm run clean && NODE_ENV=production webpack -p",
+    "build:dev": "npm run clean && NODE_ENV=development webpack -d",
+    "build:watch": "npm run clean && NODE_ENV=development webpack -d --watch",
+    "server:dev": "NODE_ENV=development node server.js",
+    "server:prod": "NODE_ENV=production node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^2.0.0",
+    "ejs": "^2.5.3",
+    "express": "^4.14.0",
+    "getenv": "^0.7.0",
+    "http": "0.0.0",
+    "isdev": "^1.0.1",
     "react": "^15.4.1",
-    "react-dom": "^15.4.1"
+    "react-dom": "^15.4.1",
+    "serve-static": "^1.11.1",
+    "winston": "^2.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.18.2",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.8",
+    "babel-polyfill": "^6.16.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
+    "babel-preset-react-hmre": "^1.1.1",
+    "babel-root-import": "^4.1.5",
+    "connect-history-api-fallback": "^1.3.0",
     "eslint": "^3.11.1",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-loader": "^1.6.1",
     "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^3.0.1",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.7.1",
-    "webpack": "^1.13.3"
+    "webpack": "^1.13.3",
+    "webpack-dev-middleware": "^1.8.4",
+    "webpack-hot-middleware": "^2.13.2",
+    "webpack-merge": "^1.0.2"
   }
 }

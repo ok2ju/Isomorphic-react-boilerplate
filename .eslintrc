@@ -1,4 +1,11 @@
 {
+  "extends": ["airbnb"],
   "parser": "babel-eslint",
-  "extends": ["airbnb"]
+  "env": {
+    "mocha": true,
+    "browser": true
+  },
+  "rules": {
+    "import/no-unresolved": [2, { "ignore": ["\/~*"] }]
+  }
 }
