@@ -17,7 +17,7 @@ let config = {
   },
   resolve: {
     root: dir.src,
-    extensions: ['', '.js', 'jsx', '.json'],
+    extensions: ['', '.js', '.jsx', '.json'],
   },
   module: {
     preLoaders: [{
@@ -25,11 +25,6 @@ let config = {
       loader: 'eslint-loader',
       exclude: /node_modules/,
       include: dir.src,
-    }],
-    loaders: [{
-      test: /\.jsx?$/,
-      loader: 'babel-loader',
-      exclude: /node_modules/,
     }],
   },
   plugins: [
@@ -60,6 +55,25 @@ if (TARGET === 'build:prod' && !isDev) {
         },
       }),
     ],
+    module: {
+      loaders: [{
+        test: /\.jsx?$/,
+        loader: 'babel-loader',
+        exclude: /node_modules/,
+      }],
+    },
+  });
+}
+
+if (TARGET === 'server:prod' && !isDev) {
+  config = merge(config, {
+    module: {
+      loaders: [{
+        test: /\.jsx?$/,
+        loader: 'babel-loader',
+        exclude: /node_modules/,
+      }],
+    },
   });
 }
 
@@ -71,6 +85,16 @@ if (TARGET === 'server:dev' && isDev) {
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoErrorsPlugin(),
     ],
+    module: {
+      loaders: [{
+        test: /\.jsx?$/,
+        loader: 'babel-loader',
+        exclude: /node_modules/,
+        query: {
+          presets: ['react-hmre'],
+        },
+      }],
+    },
   });
 }
 

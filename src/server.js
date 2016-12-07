@@ -5,7 +5,9 @@ import serveStatic from 'serve-static';
 
 import { config, dir } from './config';
 import { logServerConfig } from './logger';
+
 import { hotMiddleware } from './middleware/hot';
+import { isoMiddleware } from './middleware/iso';
 
 const app = express();
 const server = http.createServer(app);
@@ -17,15 +19,9 @@ app.set('views', dir.views);
 // loading the hot-middleware
 if (isDev) app.use(hotMiddleware);
 
-app.use('/buid', serveStatic(dir.build));
-app.use('/static', serveStatic(dir.static));
-
-app.get('*', (req, res) => {
-  res
-    .status(200)
-    .render('index', {
-      build: isDev ? null : '/build',
-    });
-});
+app
+  .use('/buid', serveStatic(dir.build))
+  .use('/static', serveStatic(dir.static))
+  .use(isoMiddleware);
 
 server.listen(config.port, config.host, err => logServerConfig(err));

@@ -1,4 +1,4 @@
-import historyFallback from 'connect-history-api-fallback';
+// import historyFallback from 'connect-history-api-fallback';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import config from '~/webpack.config.babel';
@@ -16,9 +16,9 @@ const middleware = [
     },
   }),
   webpackHotMiddleware(bundler, {
-    log: console.log,
+    log: console.log, // eslint-disable-line no-console
   }),
-  historyFallback(),
+  // historyFallback(),
 ];
 
 export { middleware as hotMiddleware };
