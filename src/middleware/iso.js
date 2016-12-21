@@ -1,17 +1,28 @@
 import React from 'react';
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
 import isDev from 'isdev';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import routes from '~/src/routes';
+import * as reducers from '../reducers';
 
 function handleRouter(res, props) {
-  const html = renderToString(<RouterContext {...props} />);
+  const reducer = combineReducers(reducers);
+  const store = createStore(reducer);
+  const initialState = store.getState();
+  const html = renderToString(
+    <Provider store={store}>
+      <RouterContext {...props} />
+    </Provider>
+  );
 
   res
     .status(200)
     .render('index', {
       build: isDev ? null : '/build',
       root: html,
+      state: JSON.stringify(initialState)
     });
 }
 
