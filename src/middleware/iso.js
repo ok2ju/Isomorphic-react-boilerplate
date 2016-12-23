@@ -1,29 +1,32 @@
 import React from 'react';
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import isDev from 'isdev';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import routes from '~/src/routes';
 import * as reducers from '../reducers';
+import promiseMiddleware from './promise';
+import fetchComponentData from '../lib/fetchComponentData';
 
 function handleRouter(res, props) {
   const reducer = combineReducers(reducers);
-  const store = createStore(reducer);
+  const store = createStore(reducer, applyMiddleware(promiseMiddleware));
   const initialState = store.getState();
-  const html = renderToString(
-    <Provider store={store}>
-      <RouterContext {...props} />
-    </Provider>
-  );
 
-  res
-    .status(200)
-    .render('index', {
-      build: isDev ? null : '/build',
-      root: html,
-      state: JSON.stringify(initialState)
-    });
+  fetchComponentData(store.dispatch, props.components, props.params)
+    .then(() => renderToString(
+      <Provider store={store}>
+        <RouterContext {...props} />
+      </Provider>
+    ))
+    .then(html => res
+      .status(200)
+      .render('index', {
+        build: isDev ? null : '/build',
+        root: html,
+        state: JSON.stringify(initialState)
+      }));
 }
 
 function handleRedirect(res, redirect) {
