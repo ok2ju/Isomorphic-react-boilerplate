@@ -18,6 +18,7 @@
   "author": "Alexey Vakulich",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.15.3",
     "dotenv": "^2.0.0",
     "ejs": "^2.5.3",
     "express": "^4.14.0",

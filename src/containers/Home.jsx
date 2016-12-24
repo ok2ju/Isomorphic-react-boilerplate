@@ -1,12 +1,43 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import Todo from '../components/Todo';
+import * as todoActionCreators from '../actions/TodoActions';
 
-export default class Home extends Component {
+class Home extends Component {
+  static propTypes = {
+    todos: PropTypes.arrayOf(PropTypes.string),
+    actions: PropTypes.shape({
+      createTodo: PropTypes.func,
+      editTodo: PropTypes.func,
+      deleteTodo: PropTypes.func
+    }),
+  };
 
-  static fetchData() {} // will be used for server side rendering
+  // TODO: Rename to 'fetchData' (array of async action creators)
+  static needs = [
+    todoActionCreators.getTodos
+  ];
 
   render() {
     return (
-      <h1>Home Page</h1>
+      <Todo
+        todos={this.props.todos}
+        actions={this.props.actions}
+      />
     );
   }
 }
+
+const mapStateToProps = state => ({
+  todos: state.todos
+});
+
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(todoActionCreators, dispatch)
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);
