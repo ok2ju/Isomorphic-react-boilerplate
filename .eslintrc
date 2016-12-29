@@ -6,10 +6,12 @@
     "browser": true
   },
   "rules": {
-    "import/no-unresolved": [2, { "ignore": ["\/~*"] }],
     "comma-dangle": 0,
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "react/forbid-prop-types": [0],
+    "react/forbid-prop-types": 0,
+    "import/extensions": 0,
+    "import/prefer-default-export": 0,
+    "import/no-unresolved": [2, { "ignore": ["\/~*", "^[~]", "^[@]"] }],
     "jsx-a11y/no-static-element-interactions": 0
   }
 }

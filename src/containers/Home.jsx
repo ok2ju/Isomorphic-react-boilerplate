@@ -6,7 +6,7 @@ import * as todoActionCreators from '../actions/TodoActions';
 
 class Home extends Component {
   static propTypes = {
-    todos: PropTypes.arrayOf(PropTypes.string),
+    todos: PropTypes.arrayOf(PropTypes.object),
     actions: PropTypes.shape({
       createTodo: PropTypes.func,
       editTodo: PropTypes.func,
@@ -30,7 +30,7 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => ({
-  todos: state.todos
+  todos: state.todo.items
 });
 
 const mapDispatchToProps = dispatch => ({

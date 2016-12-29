@@ -20,7 +20,7 @@ app.set('views', dir.views);
 if (isDev) app.use(hotMiddleware);
 
 app
-  .use('/buid', serveStatic(dir.build))
+  .use('/build', serveStatic(dir.build))
   .use('/static', serveStatic(dir.static))
   .use(isoMiddleware);
 

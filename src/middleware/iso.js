@@ -5,14 +5,13 @@ import isDev from 'isdev';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import routes from '~/src/routes';
+import fetchComponentData from '~/src/lib/fetchComponentData';
 import * as reducers from '../reducers';
 import promiseMiddleware from './promise';
-import fetchComponentData from '../lib/fetchComponentData';
 
 function handleRouter(res, props) {
   const reducer = combineReducers(reducers);
   const store = createStore(reducer, applyMiddleware(promiseMiddleware));
-  const initialState = store.getState();
 
   fetchComponentData(store.dispatch, props.components, props.params)
     .then(() => renderToString(
@@ -20,13 +19,17 @@ function handleRouter(res, props) {
         <RouterContext {...props} />
       </Provider>
     ))
-    .then(html => res
-      .status(200)
-      .render('index', {
-        build: isDev ? null : '/build',
-        root: html,
-        state: JSON.stringify(initialState)
-      }));
+    .then((html) => {
+      const initialState = store.getState();
+
+      return res
+        .status(200)
+        .render('index', {
+          build: isDev ? null : '/build',
+          root: html,
+          state: JSON.stringify(initialState)
+        });
+    });
 }
 
 function handleRedirect(res, redirect) {
